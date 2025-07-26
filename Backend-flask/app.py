@@ -4,6 +4,23 @@ from tensorflow.keras.preprocessing import image
 from PIL import Image
 import numpy as np
 from flask_cors import CORS
+import os
+import gdown
+
+
+MODEL_PATH = 'model/plant_disease_model.h5'
+DRIVE_FILE_ID = '1O9sS-r6Mo3qbhA_hjsQ18wt3A1SYPp7x'  # <-- Replace with your actual file ID
+DRIVE_URL = f'https://drive.google.com/uc?id={DRIVE_FILE_ID}'
+
+# Download if model doesn't exist
+if not os.path.exists(MODEL_PATH):
+    os.makedirs('model', exist_ok=True)
+    print("Downloading model from Google Drive...")
+    gdown.download(DRIVE_URL, MODEL_PATH, quiet=False)
+
+# Load the model
+model = load_model(MODEL_PATH)
+
 
 app = Flask(__name__)
 CORS(app)  # Allow requests from frontend
